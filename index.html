@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visão Geral dos Negócios — Farujo's Cosméticos</title>
+  
+  <!-- Tailwind CSS CDN com plugins -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">
+  globalThis.tailwind = globalThis.tailwind || {};
+  globalThis.tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          'gold': '#D4AF37',
+          'gold-hover': '#E5C158',
+          'magenta': '#E02E76',
+          'dark-surface': '#121212',
+          'dark-on-surface': '#F4F4F5',
+          'dark-surface-card': '#18181B',
+          'dark-surface-card-border': '#27272A',
+          'dark-surface-input': '#141416',
+          'dark-surface-input-border': '#2E2E33',
+          'dark-text-muted': '#9CA3AF',
+          'dark-text-subtle': '#71717A',
+        },
+        borderRadius: {
+          'DEFAULT': '10px',
+        },
+        fontFamily: {
+          'headline': ['"Instrument Sans"', 'sans-serif'],
+          'body': ['"Alata"', 'sans-serif'],
+          'label': ['"Instrument Sans"', 'sans-serif'],
+        }
+      },
+    },
+  };
+  </script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+</head>
+<body class="bg-dark-surface text-dark-on-surface min-h-screen flex flex-col md:flex-row relative overflow-x-hidden font-body antialiased">
+
+  <!-- Fundo de ambientação -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
+    <div class="absolute -top-32 -left-32 w-[600px] h-[400px] bg-gold/5 rounded-full blur-[150px]"></div>
+    <div class="absolute top-1/3 -right-40 w-[650px] h-[500px] bg-magenta/5 rounded-full blur-[170px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#27272A_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.18]"></div>
+  </div>
+
+  <!-- Overlay para fechar Sidebar no mobile -->
+  <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 hidden md:hidden"></div>
+
+  <!-- ========================================================================= -->
+  <!-- SIDEBAR (Menu Lateral / Gaveta Mobile)                                   -->
+  <!-- ========================================================================= -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-dark-surface-card/95 border-r border-dark-surface-card-border flex flex-col justify-between z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:static md:z-20 shrink-0">
+    
+    <div>
+      <div class="p-4 sm:p-6 border-b border-dark-surface-card-border/70 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-gradient-to-b from-[#222226] to-[#151517] border border-gold/30 flex items-center justify-center shadow-inner shrink-0">
+            <svg class="w-5 h-5 text-gold" viewBox="0 0 32 32" fill="none">
+              <path d="M9 7H23M9 15H19M9 25V7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <circle cx="23" cy="7" r="1.5" fill="#E02E76"></circle>
+              <circle cx="19" cy="15" r="1.5" fill="#D4AF37"></circle>
+            </svg>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-headline tracking-wider text-[15px] font-bold text-dark-on-surface leading-tight">
+              Farujo’s
+            </span>
+            <span class="font-label text-[10px] tracking-wider text-gold font-medium uppercase mt-0.5">
+              Powered by Zyone
+            </span>
+          </div>
+        </div>
+
+        <button onclick="toggleSidebar()" class="md:hidden p-1.5 rounded-lg text-dark-text-subtle hover:text-dark-on-surface hover:bg-dark-surface-input">
+          <span class="material-symbols-outlined text-[20px]">close</span>
+        </button>
+      </div>
+
+      <nav class="p-4 space-y-1.5">
+        <div class="px-3 pt-2 pb-1.5">
+          <span class="font-label text-[10px] uppercase tracking-widest text-dark-text-subtle font-semibold">
+            Menu Corporativo
+          </span>
+        </div>
+
+        <!-- Dashboard Geral (Ativo) -->
+        <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT bg-gold/10 border border-gold/30 text-gold font-headline text-sm font-medium transition-all">
+          <span class="material-symbols-outlined text-[20px] text-gold" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+          <span>Dashboard Geral</span>
+        </a>
+
+        <!-- Leads / Clientes -->
+        <a href="leads.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-[20px] text-dark-text-subtle">group</span>
+            <span>Leads / Clientes</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full bg-dark-surface-input text-dark-text-subtle font-label text-[11px] font-semibold">
+            128
+          </span>
+        </a>
+
+        <!-- Configurações -->
+        <a href="configuracoes.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
+          <span class="material-symbols-outlined text-[20px] text-dark-text-subtle">tune</span>
+          <span>Configurações</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-dark-surface-card-border/70 space-y-3">
+      <div class="p-3 rounded-DEFAULT bg-dark-surface-input/80 border border-dark-surface-card-border text-center">
+        <p class="font-label text-[11px] font-medium text-dark-on-surface">Distribuidora Autorizada</p>
+        <p class="font-body text-[10px] text-dark-text-subtle mt-0.5">Gestão Oficial de Perfumes Zyone</p>
+      </div>
+
+      <a href="login.html" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-colors font-headline text-sm font-medium">
+        <span class="material-symbols-outlined text-[19px]">logout</span>
+        <span>Sair do Sistema</span>
+      </a>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================= -->
+  <!-- CONTEÚDO PRINCIPAL                                                       -->
+  <!-- ========================================================================= -->
+  <div class="flex-1 flex flex-col min-w-0 relative z-10">
+
+    <!-- Header Superior -->
+    <header class="h-16 sm:h-20 border-b border-dark-surface-card-border bg-dark-surface-card/60 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+      
+      <div class="flex items-center gap-3 sm:gap-4">
+        <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface hover:border-gold transition-colors">
+          <span class="material-symbols-outlined text-[22px]">menu</span>
+        </button>
+
+        <div>
+          <h1 class="font-headline text-lg sm:text-2xl font-semibold text-dark-on-surface">
+            Visão Geral dos Negócios
+          </h1>
+          <p class="font-body text-xs sm:text-sm text-dark-text-muted hidden sm:block">
+            Olá, Laianderson • Resumo executivo de performance e captação.
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 sm:gap-4">
+        <!-- Seletor de Período -->
+        <div class="relative">
+          <select id="period-selector" onchange="updateDashboardPeriod(this.value)" class="min-h-[38px] pl-3 pr-8 py-1.5 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface font-body text-xs sm:text-sm focus:border-gold focus:ring-1 focus:ring-gold transition-colors outline-none cursor-pointer appearance-none">
+            <option value="hoje">Hoje</option>
+            <option value="7dias" selected>Últimos 7 dias</option>
+            <option value="mes">Este Mês</option>
+            <option value="tudo">Todo o Período</option>
+          </select>
+          <span class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center text-dark-text-subtle pointer-events-none">
+            <span class="material-symbols-outlined text-[16px]">expand_more</span>
+          </span>
+        </div>
+
+        <div class="h-8 w-px bg-dark-surface-card-border hidden sm:block"></div>
+
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-gold/30 to-magenta/30 border border-gold/40 flex items-center justify-center font-headline font-bold text-gold text-xs sm:text-sm shrink-0 shadow-sm">
+            LA
+          </div>
+          <div class="hidden xl:flex flex-col text-left">
+            <span class="font-headline text-sm font-semibold text-dark-on-surface leading-tight">
+              Laianderson
+            </span>
+            <span class="font-label text-xs text-gold font-medium">
+              Gestor Comercial
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </header>
+
+    <!-- Corpo do Dashboard -->
+    <main class="flex-1 p-4 sm:p-8 space-y-6 sm:space-y-8 max-w-[1600px] w-full mx-auto">
+
+      <!-- ===================================================================== -->
+      <!-- BLOCO 1: KPIS PRINCIPAIS (4 Cards no Topo)                            -->
+      <!-- ===================================================================== -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6" aria-label="Métricas Principais">
+        
+        <!-- KPI 1: Total de Leads -->
+        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="space-y-1">
+              <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
+                Total de Leads
+              </span>
+              <div class="flex items-baseline gap-2 pt-1">
+                <span class="font-headline text-2xl sm:text-3xl font-bold text-dark-on-surface tabular-nums">
+                  128
+                </span>
+                <span class="inline-flex items-center text-emerald-400 font-label text-xs font-semibold">
+                  <span class="material-symbols-outlined text-[15px]">arrow_upward</span>
+                  +14.2%
+                </span>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold shrink-0">
+              <span class="material-symbols-outlined text-[22px]">groups</span>
+            </div>
+          </div>
+          <p class="font-body text-xs text-dark-text-muted pt-2 border-t border-dark-surface-card-border/60 mt-3">
+            Comparado à semana anterior
+          </p>
+        </article>
+
+        <!-- KPI 2: Potenciais Revendedores -->
+        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-magenta/40 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="space-y-1">
+              <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
+                Potenciais Revendedores
+              </span>
+              <div class="flex items-baseline gap-2 pt-1">
+                <span class="font-headline text-2xl sm:text-3xl font-bold text-dark-on-surface tabular-nums">
+                  45
+                </span>
+                <span class="inline-flex items-center text-magenta font-label text-xs font-semibold">
+                  35.1% do total
+                </span>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-magenta/10 border border-magenta/20 flex items-center justify-center text-magenta shrink-0">
+              <span class="material-symbols-outlined text-[22px]">handshake</span>
+            </div>
+          </div>
+          <p class="font-body text-xs text-dark-text-muted pt-2 border-t border-dark-surface-card-border/60 mt-3">
+            Interesse em mostruário e revenda
+          </p>
+        </article>
+
+        <!-- KPI 3 (Corrigido): Leads Pendentes / A Atender -->
+        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-blue-500/40 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="space-y-1">
+              <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
+                Leads Pendentes (A Chamar)
+              </span>
+              <div class="flex items-baseline gap-2 pt-1">
+                <span class="font-headline text-2xl sm:text-3xl font-bold text-dark-on-surface tabular-nums">
+                  28
+                </span>
+                <span class="inline-flex items-center text-blue-400 font-label text-xs font-semibold">
+                  Aguardando toque
+                </span>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+              <span class="material-symbols-outlined text-[22px]">pending_actions</span>
+            </div>
+          </div>
+          <p class="font-body text-xs text-dark-text-muted pt-2 border-t border-dark-surface-card-border/60 mt-3">
+            Fila de contatos manuais no WhatsApp
+          </p>
+        </article>
+
+        <!-- KPI 4: Cadastros de Hoje -->
+        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
+          <div class="flex items-start justify-between">
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
+                  Cadastros de Hoje
+                </span>
+                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-label text-[10px] font-semibold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                  Tempo Real
+                </span>
+              </div>
+              <div class="flex items-baseline gap-2 pt-1">
+                <span class="font-headline text-2xl sm:text-3xl font-bold text-dark-on-surface tabular-nums">
+                  12
+                </span>
+                <span class="inline-flex items-center text-emerald-400 font-label text-xs font-semibold">
+                  +4 nas últimas 2h
+                </span>
+              </div>
+            </div>
+            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+              <span class="material-symbols-outlined text-[22px]">flash_on</span>
+            </div>
+          </div>
+          <p class="font-body text-xs text-dark-text-muted pt-2 border-t border-dark-surface-card-border/60 mt-3">
+            Novos leads captados hoje
+          </p>
+        </article>
+
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- BLOCO 2: GRÁFICOS (Evolução Temporal & Distribuição)                  -->
+      <!-- ===================================================================== -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        <!-- Gráfico 1: Evolução de Cadastros (8 colunas) -->
+        <article class="lg:col-span-8 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
+          <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
+            <div>
+              <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
+                <span>Evolução de Cadastros de Leads</span>
+                <span class="text-gold text-xs px-2 py-0.5 rounded-full bg-gold/10 border border-gold/20 font-label font-medium">
+                  Crescimento Contínuo
+                </span>
+              </h3>
+              <p class="font-body text-xs text-dark-text-subtle mt-0.5">
+                Volume diário de novos contatos captados.
+              </p>
+            </div>
+          </div>
+
+          <!-- SVG Responsivo -->
+          <div class="w-full h-52 sm:h-60 my-2 relative">
+            <svg class="w-full h-full overflow-visible" viewBox="0 0 600 200" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="goldAreaGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.32"></stop>
+                  <stop offset="100%" stop-color="#D4AF37" stop-opacity="0.0"></stop>
+                </linearGradient>
+              </defs>
+
+              <line x1="0" y1="40" x2="600" y2="40" stroke="#27272A" stroke-dasharray="4 4" stroke-width="1"></line>
+              <line x1="0" y1="90" x2="600" y2="90" stroke="#27272A" stroke-dasharray="4 4" stroke-width="1"></line>
+              <line x1="0" y1="140" x2="600" y2="140" stroke="#27272A" stroke-dasharray="4 4" stroke-width="1"></line>
+              <line x1="0" y1="190" x2="600" y2="190" stroke="#27272A" stroke-width="1"></line>
+
+              <polygon points="0,190 0,145 100,130 200,105 300,90 400,65 500,50 600,25 600,190" fill="url(#goldAreaGrad)"></polygon>
+              <polyline points="0,145 100,130 200,105 300,90 400,65 500,50 600,25" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+
+              <circle cx="100" cy="130" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
+              <circle cx="200" cy="105" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
+              <circle cx="300" cy="90" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
+              <circle cx="400" cy="65" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
+              <circle cx="500" cy="50" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
+              <circle cx="600" cy="25" r="5.5" fill="#D4AF37" stroke="#FFFFFF" stroke-width="2"></circle>
+            </svg>
+          </div>
+
+          <div class="grid grid-cols-7 text-center text-xs font-label text-dark-text-subtle pt-2 border-t border-dark-surface-card-border/60">
+            <span>Seg</span>
+            <span>Ter</span>
+            <span>Qua</span>
+            <span>Qui</span>
+            <span>Sex</span>
+            <span>Sáb</span>
+            <span class="text-gold font-bold">Hoje</span>
+          </div>
+        </article>
+
+        <!-- Gráfico 2: Distribuição de Interesse (4 colunas) -->
+        <article class="lg:col-span-4 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
+          <div>
+            <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface">
+              Distribuição por Interesse
+            </h3>
+            <p class="font-body text-xs text-dark-text-subtle mt-0.5">
+              Proporção dos perfis de entrada no funil.
+            </p>
+          </div>
+
+          <div class="my-4 flex flex-col items-center justify-center">
+            <div class="relative w-40 h-40 flex items-center justify-center">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#222226" stroke-width="12"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#D4AF37" stroke-width="12" stroke-dasharray="84 239" stroke-dashoffset="0"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#E02E76" stroke-width="12" stroke-dasharray="72 239" stroke-dashoffset="-84"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#38BDF8" stroke-width="12" stroke-dasharray="83 239" stroke-dashoffset="-156"></circle>
+              </svg>
+
+              <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                <span class="font-headline text-2xl font-bold text-dark-on-surface tabular-nums leading-tight">
+                  128
+                </span>
+                <span class="font-label text-[10px] uppercase tracking-wider text-dark-text-subtle font-medium">
+                  Total Leads
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2.5 pt-2 border-t border-dark-surface-card-border/60 text-xs sm:text-sm">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-gold"></span>
+                <span class="text-dark-on-surface font-medium">Revender Perfumes</span>
+              </div>
+              <span class="font-headline font-bold text-gold tabular-nums">45 (35%)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-magenta"></span>
+                <span class="text-dark-on-surface font-medium">Construir Equipe</span>
+              </div>
+              <span class="font-headline font-bold text-magenta tabular-nums">38 (30%)</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-[#38BDF8]"></span>
+                <span class="text-dark-on-surface font-medium">Consumir Produtos</span>
+              </div>
+              <span class="font-headline font-bold text-[#38BDF8] tabular-nums">45 (35%)</span>
+            </div>
+          </div>
+
+        </article>
+
+      </section>
+
+      <!-- ===================================================================== -->
+      <!-- BLOCO 3: FEED RECENTE & CIDADES                                       -->
+      <!-- ===================================================================== -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Feed Recente (7 colunas) -->
+        <article class="lg:col-span-7 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-dark-surface-card-border/80">
+            <div>
+              <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
+                <span>Feed de Atividade Recente</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              </h3>
+              <p class="font-body text-xs text-dark-text-subtle mt-0.5">
+                Últimos cadastros prontos para contato imediato.
+              </p>
+            </div>
+            
+            <a href="leads.html" class="font-headline text-xs text-gold hover:underline flex items-center gap-1">
+              <span>Ver todos</span>
+              <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+            </a>
+          </div>
+
+          <div class="divide-y divide-dark-surface-card-border/70 text-xs sm:text-sm">
+            
+            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-gold/15 text-gold border border-gold/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                  MS
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-headline font-semibold text-dark-on-surface truncate">
+                    Mariana Silveira Ramos
+                  </h4>
+                  <p class="font-body text-[11px] text-dark-text-subtle truncate">
+                    São Paulo - Moema • <span class="text-gold font-medium">Revender</span>
+                  </p>
+                </div>
+              </div>
+              <button type="button" onclick="triggerWhatsApp('5511987214432', 'Mariana Silveira', 'Revender')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">chat</span>
+                <span class="hidden sm:inline">WhatsApp</span>
+              </button>
+            </div>
+
+            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-magenta/15 text-magenta border border-magenta/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                  RA
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-headline font-semibold text-dark-on-surface truncate">
+                    Rodrigo Almeida Santos
+                  </h4>
+                  <p class="font-body text-[11px] text-dark-text-subtle truncate">
+                    Rio de Janeiro - Barra • <span class="text-magenta font-medium">Construir Equipe</span>
+                  </p>
+                </div>
+              </div>
+              <button type="button" onclick="triggerWhatsApp('5521993428819', 'Rodrigo Almeida', 'Construir Equipe')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">chat</span>
+                <span class="hidden sm:inline">WhatsApp</span>
+              </button>
+            </div>
+
+            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-8 h-8 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] border border-[#38BDF8]/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                  CF
+                </div>
+                <div class="min-w-0">
+                  <h4 class="font-headline font-semibold text-dark-on-surface truncate">
+                    Camila Fernandes Duarte
+                  </h4>
+                  <p class="font-body text-[11px] text-dark-text-subtle truncate">
+                    Belo Horizonte - Savassi • <span class="text-[#38BDF8] font-medium">Consumir</span>
+                  </p>
+                </div>
+              </div>
+              <button type="button" onclick="triggerWhatsApp('5531984551200', 'Camila Duarte', 'Consumir')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+                <span class="material-symbols-outlined text-[16px]">chat</span>
+                <span class="hidden sm:inline">WhatsApp</span>
+              </button>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- Principais Cidades (5 colunas) -->
+        <article class="lg:col-span-5 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
+          <div class="pb-3 border-b border-dark-surface-card-border/80">
+            <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-[18px] text-gold">location_city</span>
+              <span>Principais Cidades</span>
+            </h3>
+            <p class="font-body text-xs text-dark-text-subtle mt-0.5">
+              Polos com maior concentração de cadastros.
+            </p>
+          </div>
+
+          <div class="space-y-3.5 text-xs sm:text-sm">
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-dark-on-surface font-medium">1. São Paulo, SP</span>
+                <span class="font-headline font-semibold text-dark-on-surface tabular-nums">42 leads (32.8%)</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-dark-surface-input overflow-hidden">
+                <div class="h-full bg-gold rounded-full" style="width: 32.8%;"></div>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-dark-on-surface font-medium">2. Rio de Janeiro, RJ</span>
+                <span class="font-headline font-semibold text-dark-on-surface tabular-nums">28 leads (21.8%)</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-dark-surface-input overflow-hidden">
+                <div class="h-full bg-magenta rounded-full" style="width: 21.8%;"></div>
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-dark-on-surface font-medium">3. Belo Horizonte, MG</span>
+                <span class="font-headline font-semibold text-dark-on-surface tabular-nums">19 leads (14.8%)</span>
+              </div>
+              <div class="w-full h-1.5 rounded-full bg-dark-surface-input overflow-hidden">
+                <div class="h-full bg-blue-400 rounded-full" style="width: 14.8%;"></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="toast-notification" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT bg-dark-surface-card border border-gold/40 text-dark-on-surface shadow-2xl">
+      <span id="toast-icon" class="material-symbols-outlined text-gold text-[20px]">check_circle</span>
+      <span id="toast-message" class="font-body text-xs sm:text-sm font-medium">Ação realizada com sucesso!</span>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+
+      if (isOpen) {
+        sidebar.classList.add('-translate-x-full');
+        overlay.classList.add('hidden');
+      } else {
+        sidebar.classList.remove('-translate-x-full');
+        overlay.classList.remove('hidden');
+      }
+    }
+
+    function updateDashboardPeriod(period) {
+      showToast(`Métricas atualizadas para o período selecionado.`, 'filter_list');
+    }
+
+    function triggerWhatsApp(phone, name, interest) {
+      const msg = encodeURIComponent(`Olá ${name}! Sou da equipe Farujo's Cosméticos (distribuidora Zyone). Vi seu interesse em "${interest}" e preparei nosso catálogo com condições exclusivas!`);
+      const url = `https://wa.me/${phone}?text=${msg}`;
+      
+      showToast(`Abrindo conversa com ${name}...`, 'chat');
+      setTimeout(() => {
+        window.open(url, '_blank');
+      }, 500);
+    }
+
+    function showToast(message, icon = 'check_circle') {
+      const toast = document.getElementById('toast-notification');
+      const msgElem = document.getElementById('toast-message');
+      const iconElem = document.getElementById('toast-icon');
+
+      msgElem.textContent = message;
+      iconElem.textContent = icon;
+
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
