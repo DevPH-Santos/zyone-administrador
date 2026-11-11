@@ -404,25 +404,39 @@
           </div>
         </div>
 
-        <!-- Linha 2: Usuário e Data de Nascimento -->
+        <!-- Linha 2: Usuário e Senha (com botão de visualização) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="p-3 rounded-DEFAULT bg-dark-surface-input/60 border border-dark-surface-input-border">
             <span class="font-label text-[11px] text-dark-text-subtle uppercase tracking-wider block">Usuário</span>
             <span id="modal-lead-usuario"
               class="font-headline text-dark-on-surface font-medium block mt-0.5 break-all"></span>
           </div>
+          <div class="p-3 rounded-DEFAULT bg-dark-surface-input/60 border border-dark-surface-input-border relative">
+            <span class="font-label text-[11px] text-dark-text-subtle uppercase tracking-wider block">Senha
+              (Hash)</span>
+            <div class="flex items-center justify-between mt-0.5">
+              <input type="password" id="modal-lead-senha" readonly
+                class="bg-transparent font-headline text-dark-on-surface font-medium w-full outline-none text-sm truncate" />
+              <button type="button" onclick="toggleModalPassword()"
+                class="text-dark-text-subtle hover:text-gold transition-colors ml-2 focus:outline-none">
+                <span id="modal-password-icon" class="material-symbols-outlined text-[18px]">visibility</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linha 3: Data de Nascimento e CPF -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div class="p-3 rounded-DEFAULT bg-dark-surface-input/60 border border-dark-surface-input-border">
             <span class="font-label text-[11px] text-dark-text-subtle uppercase tracking-wider block">Data de
               Nascimento</span>
             <span id="modal-lead-datanasc" class="font-headline text-dark-on-surface font-medium block mt-0.5"></span>
           </div>
-        </div>
-
-        <!-- CPF -->
-        <div class="p-3 rounded-DEFAULT bg-dark-surface-input/60 border border-dark-surface-input-border">
-          <span class="font-label text-[11px] text-dark-text-subtle uppercase tracking-wider block">CPF</span>
-          <span id="modal-lead-cpf"
-            class="font-headline text-dark-on-surface font-medium block mt-0.5 break-all"></span>
+          <div class="p-3 rounded-DEFAULT bg-dark-surface-input/60 border border-dark-surface-input-border">
+            <span class="font-label text-[11px] text-dark-text-subtle uppercase tracking-wider block">CPF</span>
+            <span id="modal-lead-cpf"
+              class="font-headline text-dark-on-surface font-medium block mt-0.5 break-all"></span>
+          </div>
         </div>
 
         <!-- E-mail -->
@@ -582,7 +596,20 @@
       window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
     }
 
-    // ---------- Modal ----------
+    // Alternar visualização do hash/senha no modal
+    function toggleModalPassword() {
+      const senhaInput = document.getElementById('modal-lead-senha');
+      const icon = document.getElementById('modal-password-icon');
+      if (senhaInput.type === 'password') {
+        senhaInput.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        senhaInput.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    // Atualização da função openLeadModal para preencher os novos campos
     // ---------- Modal ----------
     function openLeadModal(l) {
       $('modal-lead-name').textContent = l.nome_completo || l.nome || '';
@@ -592,7 +619,16 @@
       $('modal-lead-email').textContent = l.email || 'Não informado';
       $('modal-lead-cpf').textContent = l.cpf || 'Não informado';
       $('modal-lead-usuario').textContent = l.usuario || 'Não informado';
-      $('modal-lead-datanasc').textContent = l.data_nasc || 'Não informada';
+      $('modal-lead-datanasc').textContent = l.data_nascimento || 'Não informada';
+
+      // Define o valor do hash da senha no input protegido
+      const senhaInput = $('modal-lead-senha');
+      if (senhaInput) {
+        senhaInput.value = l.senha || 'Não definida';
+        senhaInput.type = 'password';
+        document.getElementById('modal-password-icon').textContent = 'visibility';
+      }
+
       $('modal-lead-address').textContent = addressOf(l) || '-';
       $('modal-lead-neighborhood').textContent = l.bairro || '-';
       $('modal-lead-city').textContent = l.cidade || '-';
