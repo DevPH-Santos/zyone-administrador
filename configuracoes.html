@@ -522,15 +522,18 @@
   </div>
 
   <script>
+
     const API = 'https://zyone-backend.vercel.app';
     const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+
     if (!token) window.location.href = 'login.html';
 
     const fmt = n => Number(n || 0).toLocaleString('pt-BR');
     const $ = id => document.getElementById(id);
+
     const initials = name => {
       const p = (name || '?').trim().split(/\s+/);
-      return ((p[0][0] || '') + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
+      return ((p[0]?.[0] || '') + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
     };
 
     function logout() {
@@ -540,13 +543,22 @@
 
     function toggleSidebar() {
       const sidebar = $('sidebar');
+      const overlay = $('sidebar-overlay');
+
+      if (!sidebar) return;
+
       const isOpen = !sidebar.classList.contains('-translate-x-full');
       sidebar.classList.toggle('-translate-x-full', isOpen);
-      $('sidebar-overlay').classList.toggle('hidden', isOpen);
+
+      if (overlay) overlay.classList.toggle('hidden', isOpen);
     }
 
     function togglePasswordInput(inputId, iconId) {
-      const input = $(inputId), icon = $(iconId);
+      const input = $(inputId);
+      const icon = $(iconId);
+
+      if (!input || !icon) return;
+
       const show = input.type === 'password';
       input.type = show ? 'text' : 'password';
       icon.textContent = show ? 'visibility_off' : 'visibility';
@@ -554,182 +566,359 @@
 
     function showToast(message, icon = 'check_circle') {
       const toast = $('toast-notification');
-      $('toast-message').textContent = message;
-      $('toast-icon').textContent = icon;
+      const messageEl = $('toast-message');
+      const iconEl = $('toast-icon');
+
+      if (!toast) {
+        console.log(message);
+        return;
+      }
+
+      if (messageEl) messageEl.textContent = message;
+      if (iconEl) iconEl.textContent = icon;
+
       toast.classList.remove('translate-y-24', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
+
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-24', 'opacity-0');
       }, 3000);
     }
 
-    // ---------- Template do WhatsApp ----------
+    // ---------- WhatsApp ----------
+
     function insertVariable(variable) {
       const ta = $('whatsapp-template');
+      if (!ta) return;
+
       const start = ta.selectionStart ?? ta.value.length;
       const end = ta.selectionEnd ?? ta.value.length;
-      ta.value = ta.value.slice(0, start) + variable + ta.value.slice(end);
+
+      ta.value =
+        ta.value.slice(0, start) +
+        variable +
+        ta.value.slice(end);
+
       ta.focus();
       ta.selectionStart = ta.selectionEnd = start + variable.length;
+
       renderPreview();
     }
 
-    // Usa só o primeiro nome, igual ao envio real nas páginas de leads
     function renderPreview() {
-      const sample = { nome: 'Mariana', interesse: 'Revender', cidade: 'São Paulo' };
-      const text = $('whatsapp-template').value.replace(/\{(nome|interesse|cidade)\}/g, (_, k) => sample[k]);
-      $('whatsapp-preview-text').textContent = `"${text}"`;
-    }
-    $('whatsapp-template').addEventListener('input', renderPreview);
+      const ta = $('whatsapp-template');
+      const preview = $('whatsapp-preview-text');
 
-    // ---------- Status do sistema (baseado em chamada real) ----------
+      if (!ta || !preview) return;
+
+      const sample = {
+        nome: 'Mariana',
+        interesse: 'Revender',
+        cidade: 'São Paulo'
+      };
+
+      const text = ta.value.replace(
+        /\{(nome|interesse|cidade)\}/g,
+        (_, key) => sample[key]
+      );
+
+      preview.textContent = `"${text}"`;
+    }
+
+    // ---------- Status ----------
+
     function setHealth(apiOk, dbOk, ms) {
-      $('api-dot').textContent = apiOk ? '🟢' : '🔴';
-      $('api-status').textContent = apiOk ? 'Conectado e ativo' : 'Sem resposta';
-      $('api-badge').textContent = apiOk ? `${ms} ms` : 'Offline';
-      $('db-dot').textContent = dbOk ? '🟢' : '🔴';
-      $('db-status').textContent = dbOk ? 'Operacional' : 'Sem resposta';
-      $('db-badge').textContent = dbOk ? 'Online' : 'Offline';
+      const elements = [
+        ['api-dot', apiOk ? '🟢' : '🔴'],
+        ['api-status', apiOk ? 'Conectado e ativo' : 'Sem resposta'],
+        ['api-badge', apiOk ? `${ms} ms` : 'Offline'],
+        ['db-dot', dbOk ? '🟢' : '🔴'],
+        ['db-status', dbOk ? 'Operacional' : 'Sem resposta'],
+        ['db-badge', dbOk ? 'Online' : 'Offline']
+      ];
 
-      const ok = apiOk && dbOk;
+      elements.forEach(([id, value]) => {
+        const el = $(id);
+        if (el) el.textContent = value;
+      });
+
       const badge = $('health-badge');
-      badge.textContent = ok ? 'Tudo operacional' : 'Instabilidade detectada';
-      badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border font-label text-xs font-medium w-full justify-center sm:w-auto ' +
-        (ok ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-rose-500/10 border-rose-500/30 text-rose-400');
+
+      if (badge) {
+        const ok = apiOk && dbOk;
+
+        badge.textContent = ok
+          ? 'Tudo operacional'
+          : 'Instabilidade detectada';
+
+        badge.className =
+          'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border font-label text-xs font-medium w-full justify-center sm:w-auto ' +
+          (ok
+            ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
+            : 'bg-rose-500/10 border-rose-500/30 text-rose-400');
+      }
     }
 
-    // ---------- Requisições ----------
+    // ---------- API ----------
+
     function expireSession() {
       logout();
       window.location.href = 'login.html';
-      return new Error('Sessão expirada.');
+      return new Error('Sessão expirada. Faça login novamente.');
     }
 
-    async function fetchSettings() {
-      const t0 = performance.now();
-      let res;
+    async function requestSettings(method = 'GET', body = null) {
+      const start = performance.now();
+
+      let response;
+
       try {
-        res = await fetch(`${API}/api/configuracoes`, { headers: { Authorization: `Bearer ${token}` } });
-      } catch {
-        setHealth(false, false, 0);
+        response = await fetch(`${API}/api/configuracoes`, {
+          method,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            ...(body ? { 'Content-Type': 'application/json' } : {})
+          },
+          ...(body ? { body: JSON.stringify(body) } : {})
+        });
+      } catch (error) {
+        if (method === 'GET') setHealth(false, false, 0);
         throw new Error('Não foi possível conectar à API.');
       }
-      const ms = Math.round(performance.now() - t0);
-      if (res.status === 401) throw expireSession();
-      const data = await res.json().catch(() => ({}));
-      setHealth(true, res.ok, ms); // se o GET funcionou, a API e o banco responderam
-      if (!res.ok) throw new Error(data.error || 'Erro ao carregar configurações');
-      return { data, ms };
-    }
 
-    async function patchSettings(body) {
-      const res = await fetch(`${API}/api/configuracoes`, {
-        method: 'PATCH',
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-      if (res.status === 401) throw expireSession();
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || 'Erro ao salvar');
+      const ms = Math.round(performance.now() - start);
+
+      if (response.status === 401) throw expireSession();
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        if (method === 'GET') setHealth(true, false, ms);
+        throw new Error(data.error || 'Não foi possível concluir a operação.');
+      }
+
+      if (method === 'GET') setHealth(true, true, ms);
+
       return data;
     }
 
-    // ---------- Carregar ----------
+    async function fetchSettings() {
+      const data = await requestSettings('GET');
+      return data;
+    }
+
+    async function patchSettings(body) {
+      return await requestSettings('PATCH', body);
+    }
+
+    // ---------- Aplicar dados na página ----------
+
     let originalEmail = '';
 
-    function applySettings(s) {
-      originalEmail = s.email_admin || '';
-      $('profile-name').value = s.nome_gestor || '';
-      $('profile-email').value = originalEmail;
-      $('whatsapp-template').value = s.whatsapp_template || '';
-      const name = s.nome_gestor || 'Gestor';
-      $('manager-name-card').textContent = name;
-      $('manager-initials').textContent = initials(name);
+    function applySettings(settings) {
+      if (!settings) return;
+
+      originalEmail = settings.email_admin || '';
+
+      if ($('profile-name')) {
+        $('profile-name').value = settings.nome_gestor || '';
+      }
+
+      if ($('profile-email')) {
+        $('profile-email').value = originalEmail;
+      }
+
+      if ($('whatsapp-template')) {
+        $('whatsapp-template').value = settings.whatsapp_template || '';
+      }
+
+      // Atualiza somente se esses elementos existirem na página.
+      const name = settings.nome_gestor || 'Gestor';
+
+      if ($('manager-name-card')) {
+        $('manager-name-card').textContent = name;
+      }
+
+      if ($('manager-initials')) {
+        $('manager-initials').textContent = initials(name);
+      }
+
       renderPreview();
     }
 
     async function loadSettings() {
       try {
-        const { data } = await fetchSettings();
+        const data = await fetchSettings();
+
         applySettings(data.settings);
-        $('nav-leads-badge').textContent = fmt(data.totalLeads);
-      } catch (err) {
-        showToast(err.message, 'error');
+
+        // Atualiza o total de leads no menu.
+        const leadsBadge = $('nav-leads-badge');
+
+        if (leadsBadge) {
+          leadsBadge.textContent = fmt(data.totalLeads);
+        }
+
+      } catch (error) {
+        showToast(error.message, 'error');
       }
     }
 
-    // ---------- Salvar ----------
+    // ---------- Salvar perfil e credenciais ----------
+
     async function saveProfile() {
       const btn = $('btn-save-profile');
-      const email = $('profile-email').value.trim();
-      const current_password = $('current-password').value;
-      const new_password = $('new-password').value;
 
-      if (new_password && new_password !== $('confirm-password').value) {
+      const name = $('profile-name')?.value.trim() || '';
+      const email = $('profile-email')?.value.trim() || '';
+      const currentPassword = $('current-password')?.value || '';
+      const newPassword = $('new-password')?.value || '';
+      const confirmPassword = $('confirm-password')?.value || '';
+
+      if (!name || name.length < 2) {
+        showToast('Informe um nome válido.', 'error');
+        return;
+      }
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showToast('Informe um e-mail válido.', 'error');
+        return;
+      }
+
+      if (newPassword && newPassword !== confirmPassword) {
         showToast('A nova senha e a confirmação não coincidem.', 'error');
         return;
       }
-      if (new_password && new_password.length < 8) {
+
+      if (newPassword && newPassword.length < 8) {
         showToast('A nova senha precisa ter pelo menos 8 caracteres.', 'error');
         return;
       }
-      if ((new_password || email.toLowerCase() !== originalEmail) && !current_password) {
+
+      if (newPassword && new TextEncoder().encode(newPassword).length > 72) {
+        showToast('A nova senha excede o limite permitido.', 'error');
+        return;
+      }
+
+      const emailChanged = email.toLowerCase() !== originalEmail.toLowerCase();
+
+      if ((newPassword || emailChanged) && !currentPassword) {
         showToast('Informe a senha atual para alterar e-mail ou senha.', 'error');
         return;
       }
 
-      btn.disabled = true;
-      try {
-        const { settings } = await patchSettings({
-          nome_gestor: $('profile-name').value,
-          email,
-          current_password,
-          new_password,
-        });
-        applySettings(settings);
-        ['current-password', 'new-password', 'confirm-password'].forEach(id => { $(id).value = ''; });
+      if (btn) btn.disabled = true;
 
-        if (new_password) {
+      try {
+        const result = await patchSettings({
+          nome_gestor: name,
+          email,
+          current_password: currentPassword,
+          ...(newPassword ? { new_password: newPassword } : {})
+        });
+
+        if (result.settings) {
+          applySettings(result.settings);
+        }
+
+        ['current-password', 'new-password', 'confirm-password'].forEach(id => {
+          if ($(id)) $(id).value = '';
+        });
+
+        if (newPassword) {
           showToast('Senha alterada. Entre novamente.', 'lock');
-          setTimeout(() => { logout(); window.location.href = 'login.html'; }, 1500);
+
+          setTimeout(() => {
+            logout();
+            window.location.href = 'login.html';
+          }, 1500);
         } else {
           showToast('Perfil atualizado com sucesso!');
         }
-      } catch (err) {
-        showToast(err.message, 'error');
+
+      } catch (error) {
+        showToast(error.message, 'error');
       } finally {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
       }
     }
+
+    // ---------- Salvar mensagem WhatsApp ----------
 
     async function saveWhatsAppMessage() {
       const btn = $('btn-save-whatsapp');
-      btn.disabled = true;
+      const template = $('whatsapp-template');
+
+      if (!template) return;
+
+      const message = template.value.trim();
+
+      if (!message) {
+        showToast('Digite uma mensagem antes de salvar.', 'error');
+        return;
+      }
+
+      if (btn) btn.disabled = true;
+
       try {
-        await patchSettings({ whatsapp_template: $('whatsapp-template').value });
+        const result = await patchSettings({
+          whatsapp_template: message
+        });
+
+        // Aplica os dados devolvidos pelo servidor.
+        if (result.settings) {
+          applySettings(result.settings);
+        } else {
+          renderPreview();
+        }
+
         showToast('Mensagem do WhatsApp atualizada!', 'chat');
-      } catch (err) {
-        showToast(err.message, 'error');
+
+      } catch (error) {
+        showToast(error.message, 'error');
       } finally {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
       }
     }
+
+    // ---------- Diagnóstico ----------
 
     async function runSystemDiagnostics() {
       const btn = $('btn-diagnostics');
-      btn.disabled = true;
+
+      if (btn) btn.disabled = true;
+
       try {
-        const { ms } = await fetchSettings();
-        showToast(`API e banco respondendo (${ms} ms).`);
-      } catch (err) {
-        showToast(err.message, 'error');
+        const data = await fetchSettings();
+
+        applySettings(data.settings);
+
+        if ($('nav-leads-badge')) {
+          $('nav-leads-badge').textContent = fmt(data.totalLeads);
+        }
+
+        showToast('API e banco respondendo corretamente.');
+
+      } catch (error) {
+        showToast(error.message, 'error');
       } finally {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
       }
     }
 
-    document.addEventListener('DOMContentLoaded', loadSettings);
+    // ---------- Inicialização ----------
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const template = $('whatsapp-template');
+
+      if (template) {
+        template.addEventListener('input', renderPreview);
+      }
+
+      loadSettings();
+    });
+
 
   </script>
 </body>
