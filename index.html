@@ -1,72 +1,84 @@
 <!DOCTYPE html>
 <html lang="pt-BR" class="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visão Geral dos Negócios — Farujo's Cosméticos</title>
-  
+
   <!-- Tailwind CSS CDN com plugins -->
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <script id="tailwind-config">
-  globalThis.tailwind = globalThis.tailwind || {};
-  globalThis.tailwind.config = {
-    darkMode: 'class',
-    theme: {
-      extend: {
-        colors: {
-          'gold': '#D4AF37',
-          'gold-hover': '#E5C158',
-          'magenta': '#E02E76',
-          'dark-surface': '#121212',
-          'dark-on-surface': '#F4F4F5',
-          'dark-surface-card': '#18181B',
-          'dark-surface-card-border': '#27272A',
-          'dark-surface-input': '#141416',
-          'dark-surface-input-border': '#2E2E33',
-          'dark-text-muted': '#9CA3AF',
-          'dark-text-subtle': '#71717A',
+    globalThis.tailwind = globalThis.tailwind || {};
+    globalThis.tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'gold': '#D4AF37',
+            'gold-hover': '#E5C158',
+            'magenta': '#E02E76',
+            'dark-surface': '#121212',
+            'dark-on-surface': '#F4F4F5',
+            'dark-surface-card': '#18181B',
+            'dark-surface-card-border': '#27272A',
+            'dark-surface-input': '#141416',
+            'dark-surface-input-border': '#2E2E33',
+            'dark-text-muted': '#9CA3AF',
+            'dark-text-subtle': '#71717A',
+          },
+          borderRadius: {
+            'DEFAULT': '10px',
+          },
+          fontFamily: {
+            'headline': ['"Instrument Sans"', 'sans-serif'],
+            'body': ['"Alata"', 'sans-serif'],
+            'label': ['"Instrument Sans"', 'sans-serif'],
+          }
         },
-        borderRadius: {
-          'DEFAULT': '10px',
-        },
-        fontFamily: {
-          'headline': ['"Instrument Sans"', 'sans-serif'],
-          'body': ['"Alata"', 'sans-serif'],
-          'label': ['"Instrument Sans"', 'sans-serif'],
-        }
       },
-    },
-  };
+    };
   </script>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alata&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet">
 </head>
-<body class="bg-dark-surface text-dark-on-surface min-h-screen flex flex-col md:flex-row relative overflow-x-hidden font-body antialiased">
+
+<body
+  class="bg-dark-surface text-dark-on-surface min-h-screen flex flex-col md:flex-row relative overflow-x-hidden font-body antialiased">
 
   <!-- Fundo de ambientação -->
   <div class="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
     <div class="absolute -top-32 -left-32 w-[600px] h-[400px] bg-gold/5 rounded-full blur-[150px]"></div>
     <div class="absolute top-1/3 -right-40 w-[650px] h-[500px] bg-magenta/5 rounded-full blur-[170px]"></div>
-    <div class="absolute inset-0 bg-[radial-gradient(#27272A_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.18]"></div>
+    <div
+      class="absolute inset-0 bg-[radial-gradient(#27272A_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.18]">
+    </div>
   </div>
 
   <!-- Overlay para fechar Sidebar no mobile -->
-  <div id="sidebar-overlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 hidden md:hidden"></div>
+  <div id="sidebar-overlay" onclick="toggleSidebar()"
+    class="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 hidden md:hidden"></div>
 
   <!-- ========================================================================= -->
   <!-- SIDEBAR (Menu Lateral / Gaveta Mobile)                                   -->
   <!-- ========================================================================= -->
-  <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-dark-surface-card/95 border-r border-dark-surface-card-border flex flex-col justify-between z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:static md:z-20 shrink-0">
-    
+  <aside id="sidebar"
+    class="fixed inset-y-0 left-0 w-64 bg-dark-surface-card/95 border-r border-dark-surface-card-border flex flex-col justify-between z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 md:static md:z-20 shrink-0">
+
     <div>
       <div class="p-4 sm:p-6 border-b border-dark-surface-card-border/70 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-lg bg-gradient-to-b from-[#222226] to-[#151517] border border-gold/30 flex items-center justify-center shadow-inner shrink-0">
+          <div
+            class="w-10 h-10 rounded-lg bg-gradient-to-b from-[#222226] to-[#151517] border border-gold/30 flex items-center justify-center shadow-inner shrink-0">
             <svg class="w-5 h-5 text-gold" viewBox="0 0 32 32" fill="none">
-              <path d="M9 7H23M9 15H19M9 25V7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M9 7H23M9 15H19M9 25V7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                stroke-linejoin="round"></path>
               <circle cx="23" cy="7" r="1.5" fill="#E02E76"></circle>
               <circle cx="19" cy="15" r="1.5" fill="#D4AF37"></circle>
             </svg>
@@ -81,7 +93,8 @@
           </div>
         </div>
 
-        <button onclick="toggleSidebar()" class="md:hidden p-1.5 rounded-lg text-dark-text-subtle hover:text-dark-on-surface hover:bg-dark-surface-input">
+        <button onclick="toggleSidebar()"
+          class="md:hidden p-1.5 rounded-lg text-dark-text-subtle hover:text-dark-on-surface hover:bg-dark-surface-input">
           <span class="material-symbols-outlined text-[20px]">close</span>
         </button>
       </div>
@@ -94,24 +107,29 @@
         </div>
 
         <!-- Dashboard Geral (Ativo) -->
-        <a href="index.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT bg-gold/10 border border-gold/30 text-gold font-headline text-sm font-medium transition-all">
-          <span class="material-symbols-outlined text-[20px] text-gold" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+        <a href="index.html"
+          class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT bg-gold/10 border border-gold/30 text-gold font-headline text-sm font-medium transition-all">
+          <span class="material-symbols-outlined text-[20px] text-gold"
+            style="font-variation-settings: 'FILL' 1;">grid_view</span>
           <span>Dashboard Geral</span>
         </a>
 
         <!-- Leads / Clientes -->
-        <a href="leads.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
+        <a href="leads.html"
+          class="flex items-center justify-between px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
           <div class="flex items-center gap-3">
             <span class="material-symbols-outlined text-[20px] text-dark-text-subtle">group</span>
             <span>Leads / Clientes</span>
           </div>
-          <span class="px-2 py-0.5 rounded-full bg-dark-surface-input text-dark-text-subtle font-label text-[11px] font-semibold">
+          <span
+            class="px-2 py-0.5 rounded-full bg-dark-surface-input text-dark-text-subtle font-label text-[11px] font-semibold">
             128
           </span>
         </a>
 
         <!-- Configurações -->
-        <a href="configuracoes.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
+        <a href="configuracoes.html"
+          class="flex items-center gap-3 px-3.5 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-dark-on-surface hover:bg-dark-surface-input transition-colors font-headline text-sm">
           <span class="material-symbols-outlined text-[20px] text-dark-text-subtle">tune</span>
           <span>Configurações</span>
         </a>
@@ -124,7 +142,8 @@
         <p class="font-body text-[10px] text-dark-text-subtle mt-0.5">Gestão Oficial de Perfumes Zyone</p>
       </div>
 
-      <a href="login.html" class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-colors font-headline text-sm font-medium">
+      <a href="login.html"
+        class="w-full flex items-center justify-center gap-2 px-3 py-2.5 rounded-DEFAULT text-dark-text-muted hover:text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 transition-colors font-headline text-sm font-medium">
         <span class="material-symbols-outlined text-[19px]">logout</span>
         <span>Sair do Sistema</span>
       </a>
@@ -138,10 +157,12 @@
   <div class="flex-1 flex flex-col min-w-0 relative z-10">
 
     <!-- Header Superior -->
-    <header class="h-16 sm:h-20 border-b border-dark-surface-card-border bg-dark-surface-card/60 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
-      
+    <header
+      class="h-16 sm:h-20 border-b border-dark-surface-card-border bg-dark-surface-card/60 backdrop-blur-md px-4 sm:px-8 flex items-center justify-between sticky top-0 z-30">
+
       <div class="flex items-center gap-3 sm:gap-4">
-        <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface hover:border-gold transition-colors">
+        <button onclick="toggleSidebar()"
+          class="md:hidden p-2 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface hover:border-gold transition-colors">
           <span class="material-symbols-outlined text-[22px]">menu</span>
         </button>
 
@@ -158,13 +179,15 @@
       <div class="flex items-center gap-3 sm:gap-4">
         <!-- Seletor de Período -->
         <div class="relative">
-          <select id="period-selector" onchange="updateDashboardPeriod(this.value)" class="min-h-[38px] pl-3 pr-8 py-1.5 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface font-body text-xs sm:text-sm focus:border-gold focus:ring-1 focus:ring-gold transition-colors outline-none cursor-pointer appearance-none">
+          <select id="period-selector" onchange="updateDashboardPeriod(this.value)"
+            class="min-h-[38px] pl-3 pr-8 py-1.5 rounded-DEFAULT bg-dark-surface-input border border-dark-surface-input-border text-dark-on-surface font-body text-xs sm:text-sm focus:border-gold focus:ring-1 focus:ring-gold transition-colors outline-none cursor-pointer appearance-none">
             <option value="hoje">Hoje</option>
             <option value="7dias" selected>Últimos 7 dias</option>
             <option value="mes">Este Mês</option>
             <option value="tudo">Todo o Período</option>
           </select>
-          <span class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center text-dark-text-subtle pointer-events-none">
+          <span
+            class="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center text-dark-text-subtle pointer-events-none">
             <span class="material-symbols-outlined text-[16px]">expand_more</span>
           </span>
         </div>
@@ -172,7 +195,8 @@
         <div class="h-8 w-px bg-dark-surface-card-border hidden sm:block"></div>
 
         <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-gold/30 to-magenta/30 border border-gold/40 flex items-center justify-center font-headline font-bold text-gold text-xs sm:text-sm shrink-0 shadow-sm">
+          <div
+            class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-tr from-gold/30 to-magenta/30 border border-gold/40 flex items-center justify-center font-headline font-bold text-gold text-xs sm:text-sm shrink-0 shadow-sm">
             LA
           </div>
           <div class="hidden xl:flex flex-col text-left">
@@ -195,9 +219,10 @@
       <!-- BLOCO 1: KPIS PRINCIPAIS (4 Cards no Topo)                            -->
       <!-- ===================================================================== -->
       <section class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6" aria-label="Métricas Principais">
-        
+
         <!-- KPI 1: Total de Leads -->
-        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
+        <article
+          class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
           <div class="flex items-start justify-between">
             <div class="space-y-1">
               <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
@@ -213,7 +238,8 @@
                 </span>
               </div>
             </div>
-            <div class="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold shrink-0">
+            <div
+              class="w-10 h-10 rounded-lg bg-gold/10 border border-gold/20 flex items-center justify-center text-gold shrink-0">
               <span class="material-symbols-outlined text-[22px]">groups</span>
             </div>
           </div>
@@ -223,7 +249,8 @@
         </article>
 
         <!-- KPI 2: Potenciais Revendedores -->
-        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-magenta/40 transition-colors">
+        <article
+          class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-magenta/40 transition-colors">
           <div class="flex items-start justify-between">
             <div class="space-y-1">
               <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
@@ -238,7 +265,8 @@
                 </span>
               </div>
             </div>
-            <div class="w-10 h-10 rounded-lg bg-magenta/10 border border-magenta/20 flex items-center justify-center text-magenta shrink-0">
+            <div
+              class="w-10 h-10 rounded-lg bg-magenta/10 border border-magenta/20 flex items-center justify-center text-magenta shrink-0">
               <span class="material-symbols-outlined text-[22px]">handshake</span>
             </div>
           </div>
@@ -248,7 +276,8 @@
         </article>
 
         <!-- KPI 3 (Corrigido): Leads Pendentes / A Atender -->
-        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-blue-500/40 transition-colors">
+        <article
+          class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-blue-500/40 transition-colors">
           <div class="flex items-start justify-between">
             <div class="space-y-1">
               <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
@@ -263,7 +292,8 @@
                 </span>
               </div>
             </div>
-            <div class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
+            <div
+              class="w-10 h-10 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 shrink-0">
               <span class="material-symbols-outlined text-[22px]">pending_actions</span>
             </div>
           </div>
@@ -273,14 +303,16 @@
         </article>
 
         <!-- KPI 4: Cadastros de Hoje -->
-        <article class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
+        <article
+          class="p-4 sm:p-5 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-lg relative group hover:border-gold/40 transition-colors">
           <div class="flex items-start justify-between">
             <div class="space-y-1">
               <div class="flex items-center gap-2">
                 <span class="font-label text-xs uppercase tracking-wider text-dark-text-subtle font-medium">
                   Cadastros de Hoje
                 </span>
-                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-label text-[10px] font-semibold">
+                <span
+                  class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-label text-[10px] font-semibold">
                   <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
                   Tempo Real
                 </span>
@@ -294,7 +326,8 @@
                 </span>
               </div>
             </div>
-            <div class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
+            <div
+              class="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0">
               <span class="material-symbols-outlined text-[22px]">flash_on</span>
             </div>
           </div>
@@ -309,14 +342,16 @@
       <!-- BLOCO 2: GRÁFICOS (Evolução Temporal & Distribuição)                  -->
       <!-- ===================================================================== -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-        
+
         <!-- Gráfico 1: Evolução de Cadastros (8 colunas) -->
-        <article class="lg:col-span-8 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
+        <article
+          class="lg:col-span-8 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
           <div class="flex items-center justify-between flex-wrap gap-3 mb-4">
             <div>
               <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
                 <span>Evolução de Cadastros de Leads</span>
-                <span class="text-gold text-xs px-2 py-0.5 rounded-full bg-gold/10 border border-gold/20 font-label font-medium">
+                <span
+                  class="text-gold text-xs px-2 py-0.5 rounded-full bg-gold/10 border border-gold/20 font-label font-medium">
                   Crescimento Contínuo
                 </span>
               </h3>
@@ -341,8 +376,10 @@
               <line x1="0" y1="140" x2="600" y2="140" stroke="#27272A" stroke-dasharray="4 4" stroke-width="1"></line>
               <line x1="0" y1="190" x2="600" y2="190" stroke="#27272A" stroke-width="1"></line>
 
-              <polygon points="0,190 0,145 100,130 200,105 300,90 400,65 500,50 600,25 600,190" fill="url(#goldAreaGrad)"></polygon>
-              <polyline points="0,145 100,130 200,105 300,90 400,65 500,50 600,25" fill="none" stroke="#D4AF37" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
+              <polygon points="0,190 0,145 100,130 200,105 300,90 400,65 500,50 600,25 600,190"
+                fill="url(#goldAreaGrad)"></polygon>
+              <polyline points="0,145 100,130 200,105 300,90 400,65 500,50 600,25" fill="none" stroke="#D4AF37"
+                stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></polyline>
 
               <circle cx="100" cy="130" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
               <circle cx="200" cy="105" r="4.5" fill="#121212" stroke="#D4AF37" stroke-width="2.5"></circle>
@@ -353,7 +390,8 @@
             </svg>
           </div>
 
-          <div class="grid grid-cols-7 text-center text-xs font-label text-dark-text-subtle pt-2 border-t border-dark-surface-card-border/60">
+          <div
+            class="grid grid-cols-7 text-center text-xs font-label text-dark-text-subtle pt-2 border-t border-dark-surface-card-border/60">
             <span>Seg</span>
             <span>Ter</span>
             <span>Qua</span>
@@ -365,7 +403,8 @@
         </article>
 
         <!-- Gráfico 2: Distribuição de Interesse (4 colunas) -->
-        <article class="lg:col-span-4 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
+        <article
+          class="lg:col-span-4 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl flex flex-col justify-between">
           <div>
             <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface">
               Distribuição por Interesse
@@ -379,9 +418,12 @@
             <div class="relative w-40 h-40 flex items-center justify-center">
               <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="38" fill="none" stroke="#222226" stroke-width="12"></circle>
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#D4AF37" stroke-width="12" stroke-dasharray="84 239" stroke-dashoffset="0"></circle>
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#E02E76" stroke-width="12" stroke-dasharray="72 239" stroke-dashoffset="-84"></circle>
-                <circle cx="50" cy="50" r="38" fill="none" stroke="#38BDF8" stroke-width="12" stroke-dasharray="83 239" stroke-dashoffset="-156"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#D4AF37" stroke-width="12" stroke-dasharray="84 239"
+                  stroke-dashoffset="0"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#E02E76" stroke-width="12" stroke-dasharray="72 239"
+                  stroke-dashoffset="-84"></circle>
+                <circle cx="50" cy="50" r="38" fill="none" stroke="#38BDF8" stroke-width="12" stroke-dasharray="83 239"
+                  stroke-dashoffset="-156"></circle>
               </svg>
 
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
@@ -427,9 +469,10 @@
       <!-- BLOCO 3: FEED RECENTE & CIDADES                                       -->
       <!-- ===================================================================== -->
       <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        
+
         <!-- Feed Recente (7 colunas) -->
-        <article class="lg:col-span-7 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
+        <article
+          class="lg:col-span-7 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-dark-surface-card-border/80">
             <div>
               <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
@@ -440,7 +483,7 @@
                 Últimos cadastros prontos para contato imediato.
               </p>
             </div>
-            
+
             <a href="leads.html" class="font-headline text-xs text-gold hover:underline flex items-center gap-1">
               <span>Ver todos</span>
               <span class="material-symbols-outlined text-[15px]">chevron_right</span>
@@ -448,10 +491,12 @@
           </div>
 
           <div class="divide-y divide-dark-surface-card-border/70 text-xs sm:text-sm">
-            
-            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+
+            <div
+              class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
               <div class="flex items-center gap-3 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-gold/15 text-gold border border-gold/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-gold/15 text-gold border border-gold/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
                   MS
                 </div>
                 <div class="min-w-0">
@@ -463,15 +508,18 @@
                   </p>
                 </div>
               </div>
-              <button type="button" onclick="triggerWhatsApp('5511987214432', 'Mariana Silveira', 'Revender')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+              <button type="button" onclick="triggerWhatsApp('5511987214432', 'Mariana Silveira', 'Revender')"
+                class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
                 <span class="material-symbols-outlined text-[16px]">chat</span>
                 <span class="hidden sm:inline">WhatsApp</span>
               </button>
             </div>
 
-            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+            <div
+              class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
               <div class="flex items-center gap-3 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-magenta/15 text-magenta border border-magenta/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-magenta/15 text-magenta border border-magenta/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
                   RA
                 </div>
                 <div class="min-w-0">
@@ -483,15 +531,18 @@
                   </p>
                 </div>
               </div>
-              <button type="button" onclick="triggerWhatsApp('5521993428819', 'Rodrigo Almeida', 'Construir Equipe')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+              <button type="button" onclick="triggerWhatsApp('5521993428819', 'Rodrigo Almeida', 'Construir Equipe')"
+                class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
                 <span class="material-symbols-outlined text-[16px]">chat</span>
                 <span class="hidden sm:inline">WhatsApp</span>
               </button>
             </div>
 
-            <div class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
+            <div
+              class="py-2.5 flex items-center justify-between gap-3 hover:bg-dark-surface-input/30 px-2 rounded transition-colors">
               <div class="flex items-center gap-3 min-w-0">
-                <div class="w-8 h-8 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] border border-[#38BDF8]/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
+                <div
+                  class="w-8 h-8 rounded-full bg-[#38BDF8]/15 text-[#38BDF8] border border-[#38BDF8]/30 flex items-center justify-center font-headline font-semibold text-xs shrink-0">
                   CF
                 </div>
                 <div class="min-w-0">
@@ -503,7 +554,8 @@
                   </p>
                 </div>
               </div>
-              <button type="button" onclick="triggerWhatsApp('5531984551200', 'Camila Duarte', 'Consumir')" class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
+              <button type="button" onclick="triggerWhatsApp('5531984551200', 'Camila Duarte', 'Consumir')"
+                class="px-3 py-1.5 rounded-DEFAULT bg-emerald-600 hover:bg-emerald-500 text-white font-headline text-xs font-semibold flex items-center gap-1 shrink-0 cursor-pointer">
                 <span class="material-symbols-outlined text-[16px]">chat</span>
                 <span class="hidden sm:inline">WhatsApp</span>
               </button>
@@ -513,7 +565,8 @@
         </article>
 
         <!-- Principais Cidades (5 colunas) -->
-        <article class="lg:col-span-5 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
+        <article
+          class="lg:col-span-5 p-5 sm:p-6 rounded-xl bg-dark-surface-card/90 border border-dark-surface-card-border shadow-xl space-y-4">
           <div class="pb-3 border-b border-dark-surface-card-border/80">
             <h3 class="font-headline text-base sm:text-lg font-semibold text-dark-on-surface flex items-center gap-2">
               <span class="material-symbols-outlined text-[18px] text-gold">location_city</span>
@@ -564,8 +617,10 @@
   </div>
 
   <!-- Toast de Notificação -->
-  <div id="toast-notification" class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
-    <div class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT bg-dark-surface-card border border-gold/40 text-dark-on-surface shadow-2xl">
+  <div id="toast-notification"
+    class="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div
+      class="flex items-center gap-3 px-4 py-3 rounded-DEFAULT bg-dark-surface-card border border-gold/40 text-dark-on-surface shadow-2xl">
       <span id="toast-icon" class="material-symbols-outlined text-gold text-[20px]">check_circle</span>
       <span id="toast-message" class="font-body text-xs sm:text-sm font-medium">Ação realizada com sucesso!</span>
     </div>
@@ -593,7 +648,7 @@
     function triggerWhatsApp(phone, name, interest) {
       const msg = encodeURIComponent(`Olá ${name}! Sou da equipe Farujo's Cosméticos (distribuidora Zyone). Vi seu interesse em "${interest}" e preparei nosso catálogo com condições exclusivas!`);
       const url = `https://wa.me/${phone}?text=${msg}`;
-      
+
       showToast(`Abrindo conversa com ${name}...`, 'chat');
       setTimeout(() => {
         window.open(url, '_blank');
@@ -616,6 +671,59 @@
         toast.classList.add('translate-y-24', 'opacity-0');
       }, 3000);
     }
+
+    // 1. Guarda de sessão no Dashboard
+    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+    if (!token) {
+      window.location.href = 'login.html';
+    }
+
+    // 2. Carrega as métricas da API
+    async function loadDashboardStats() {
+      try {
+        const response = await fetch('https://zyone-backend.vercel.app/api/dashboard', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.status === 401) {
+          // Token inválido/expirado
+          localStorage.removeItem('auth_token');
+          sessionStorage.removeItem('auth_token');
+          window.location.href = 'login.html';
+          return;
+        }
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Erro ao carregar o dashboard');
+
+        // Atualiza os contadores na tela
+        const stats = data.stats;
+
+        const kpiTotal = document.getElementById('kpi-total-leads');
+        const kpiRecent = document.getElementById('kpi-recent-leads');
+        const kpiRevenda = document.getElementById('kpi-revenda-leads');
+        const kpiEquipe = document.getElementById('kpi-equipe-leads');
+
+        if (kpiTotal) kpiTotal.textContent = stats.totalLeads;
+        if (kpiRecent) kpiRecent.textContent = stats.recentLeads;
+        if (kpiRevenda) kpiRevenda.textContent = stats.revendaCount;
+        if (kpiEquipe) kpiEquipe.textContent = stats.equipeCount;
+
+      } catch (err) {
+        if (typeof showToast === 'function') {
+          showToast(err.message, 'error');
+        }
+      }
+    }
+
+    // Chamar ao carregar a página
+    document.addEventListener('DOMContentLoaded', loadDashboardStats);
+
   </script>
 </body>
+
 </html>
