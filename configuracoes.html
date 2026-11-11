@@ -117,9 +117,9 @@
             <span class="material-symbols-outlined text-[20px] text-dark-text-subtle">group</span>
             <span>Leads / Clientes</span>
           </div>
-          <span
+          <span id="nav-leads-badge"
             class="px-2 py-0.5 rounded-full bg-dark-surface-input text-dark-text-subtle font-label text-[11px] font-semibold">
-            128
+            -
           </span>
         </a>
 
@@ -526,6 +526,7 @@
     const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
     if (!token) window.location.href = 'login.html';
 
+    const fmt = n => Number(n || 0).toLocaleString('pt-BR');
     const $ = id => document.getElementById(id);
     const initials = name => {
       const p = (name || '?').trim().split(/\s+/);
@@ -652,7 +653,7 @@
       try {
         const { data } = await fetchSettings();
         applySettings(data.settings);
-        $('nav-leads-badge').textContent = Number(data.totalLeads || 0).toLocaleString('pt-BR');
+        $('nav-leads-badge').textContent = fmt(data.totalLeads);
       } catch (err) {
         showToast(err.message, 'error');
       }
