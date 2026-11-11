@@ -522,201 +522,209 @@
   </div>
 
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('sidebar-overlay');
-      const isOpen = !sidebar.classList.contains('-translate-x-full');
+    const API = 'https://zyone-backend.vercel.app';
+    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+    if (!token) window.location.href = 'login.html';
 
-      if (isOpen) {
-        sidebar.classList.add('-translate-x-full');
-        overlay.classList.add('hidden');
-      } else {
-        sidebar.classList.remove('-translate-x-full');
-        overlay.classList.remove('hidden');
-      }
+    const $ = id => document.getElementById(id);
+    const initials = name => {
+      const p = (name || '?').trim().split(/\s+/);
+      return ((p[0][0] || '') + (p.length > 1 ? p[p.length - 1][0] : '')).toUpperCase();
+    };
+
+    function logout() {
+      localStorage.removeItem('auth_token');
+      sessionStorage.removeItem('auth_token');
+    }
+
+    function toggleSidebar() {
+      const sidebar = $('sidebar');
+      const isOpen = !sidebar.classList.contains('-translate-x-full');
+      sidebar.classList.toggle('-translate-x-full', isOpen);
+      $('sidebar-overlay').classList.toggle('hidden', isOpen);
     }
 
     function togglePasswordInput(inputId, iconId) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (!input || !icon) return;
-
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.textContent = 'visibility_off';
-      } else {
-        input.type = 'password';
-        icon.textContent = 'visibility';
-      }
-    }
-
-    function insertVariable(variable) {
-      const textarea = document.getElementById('whatsapp-template');
-      if (!textarea) return;
-
-      const start = textarea.selectionStart || textarea.value.length;
-      const end = textarea.selectionEnd || textarea.value.length;
-      const text = textarea.value;
-
-      textarea.value = text.substring(0, start) + variable + text.substring(end);
-      textarea.focus();
-      textarea.selectionStart = textarea.selectionEnd = start + variable.length;
-
-      updateWhatsAppPreview();
-      showToast(`Variável ${variable} inserida!`, 'smart_toy');
-    }
-
-    function updateWhatsAppPreview() {
-      const textarea = document.getElementById('whatsapp-template');
-      const preview = document.getElementById('whatsapp-preview-text');
-      if (!textarea || !preview) return;
-
-      let msg = textarea.value;
-      msg = msg.replace(/\{nome\}/g, 'Mariana Silveira');
-      msg = msg.replace(/\{interesse\}/g, 'Revender');
-      msg = msg.replace(/\{cidade\}/g, 'São Paulo - Moema');
-
-      preview.textContent = `"${msg}"`;
-    }
-
-    document.getElementById('whatsapp-template').addEventListener('input', updateWhatsAppPreview);
-
-    function saveProfile() {
-      const pass = document.getElementById('new-password').value;
-      const confirmPass = document.getElementById('confirm-password').value;
-
-      if (pass && pass !== confirmPass) {
-        showToast('As senhas não coincidem!', 'error');
-        return;
-      }
-      showToast('Perfil e credenciais atualizados com sucesso!', 'check_circle');
-    }
-
-    function saveWhatsAppMessage() {
-      showToast('Mensagem padrão do WhatsApp salva com sucesso!', 'chat');
-    }
-
-    function runSystemDiagnostics() {
-      showToast('Conexão perfeita: Vercel (38ms) e Supabase (24ms) operando.', 'check_circle');
+      const input = $(inputId), icon = $(iconId);
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      icon.textContent = show ? 'visibility_off' : 'visibility';
     }
 
     function showToast(message, icon = 'check_circle') {
-      const toast = document.getElementById('toast-notification');
-      const msgElem = document.getElementById('toast-message');
-      const iconElem = document.getElementById('toast-icon');
-
-      msgElem.textContent = message;
-      iconElem.textContent = icon;
-
+      const toast = $('toast-notification');
+      $('toast-message').textContent = message;
+      $('toast-icon').textContent = icon;
       toast.classList.remove('translate-y-24', 'opacity-0');
       toast.classList.add('translate-y-0', 'opacity-100');
-
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-24', 'opacity-0');
       }, 3000);
     }
 
-    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
-    if (!token) {
-      window.location.href = 'login.html';
+    // ---------- Template do WhatsApp ----------
+    function insertVariable(variable) {
+      const ta = $('whatsapp-template');
+      const start = ta.selectionStart ?? ta.value.length;
+      const end = ta.selectionEnd ?? ta.value.length;
+      ta.value = ta.value.slice(0, start) + variable + ta.value.slice(end);
+      ta.focus();
+      ta.selectionStart = ta.selectionEnd = start + variable.length;
+      renderPreview();
     }
 
-    // 1. Carregar configurações salvas no banco
+    // Usa só o primeiro nome, igual ao envio real nas páginas de leads
+    function renderPreview() {
+      const sample = { nome: 'Mariana', interesse: 'Revender', cidade: 'São Paulo' };
+      const text = $('whatsapp-template').value.replace(/\{(nome|interesse|cidade)\}/g, (_, k) => sample[k]);
+      $('whatsapp-preview-text').textContent = `"${text}"`;
+    }
+    $('whatsapp-template').addEventListener('input', renderPreview);
+
+    // ---------- Status do sistema (baseado em chamada real) ----------
+    function setHealth(apiOk, dbOk, ms) {
+      $('api-dot').textContent = apiOk ? '🟢' : '🔴';
+      $('api-status').textContent = apiOk ? 'Conectado e ativo' : 'Sem resposta';
+      $('api-badge').textContent = apiOk ? `${ms} ms` : 'Offline';
+      $('db-dot').textContent = dbOk ? '🟢' : '🔴';
+      $('db-status').textContent = dbOk ? 'Operacional' : 'Sem resposta';
+      $('db-badge').textContent = dbOk ? 'Online' : 'Offline';
+
+      const ok = apiOk && dbOk;
+      const badge = $('health-badge');
+      badge.textContent = ok ? 'Tudo operacional' : 'Instabilidade detectada';
+      badge.className = 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border font-label text-xs font-medium w-full justify-center sm:w-auto ' +
+        (ok ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' : 'bg-rose-500/10 border-rose-500/30 text-rose-400');
+    }
+
+    // ---------- Requisições ----------
+    function expireSession() {
+      logout();
+      window.location.href = 'login.html';
+      return new Error('Sessão expirada.');
+    }
+
+    async function fetchSettings() {
+      const t0 = performance.now();
+      let res;
+      try {
+        res = await fetch(`${API}/api/configuracoes`, { headers: { Authorization: `Bearer ${token}` } });
+      } catch {
+        setHealth(false, false, 0);
+        throw new Error('Não foi possível conectar à API.');
+      }
+      const ms = Math.round(performance.now() - t0);
+      if (res.status === 401) throw expireSession();
+      const data = await res.json().catch(() => ({}));
+      setHealth(true, res.ok, ms); // se o GET funcionou, a API e o banco responderam
+      if (!res.ok) throw new Error(data.error || 'Erro ao carregar configurações');
+      return { data, ms };
+    }
+
+    async function patchSettings(body) {
+      const res = await fetch(`${API}/api/configuracoes`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      if (res.status === 401) throw expireSession();
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || 'Erro ao salvar');
+      return data;
+    }
+
+    // ---------- Carregar ----------
+    let originalEmail = '';
+
+    function applySettings(s) {
+      originalEmail = s.email_admin || '';
+      $('profile-name').value = s.nome_gestor || '';
+      $('profile-email').value = originalEmail;
+      $('whatsapp-template').value = s.whatsapp_template || '';
+      const name = s.nome_gestor || 'Gestor';
+      $('manager-name-card').textContent = name;
+      $('manager-initials').textContent = initials(name);
+      renderPreview();
+    }
+
     async function loadSettings() {
       try {
-        const response = await fetch('https://zyone-backend.vercel.app/api/configuracoes', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.status === 401) {
-          localStorage.removeItem('auth_token');
-          sessionStorage.removeItem('auth_token');
-          window.location.href = 'login.html';
-          return;
-        }
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Erro ao carregar configurações');
-
-        const s = data.settings;
-        if (document.getElementById('profile-name')) document.getElementById('profile-name').value = s.nome_gestor || '';
-        if (document.getElementById('profile-email')) document.getElementById('profile-email').value = s.email || '';
-        if (document.getElementById('whatsapp-template')) document.getElementById('whatsapp-template').value = s.whatsapp_template || '';
-
+        const { data } = await fetchSettings();
+        applySettings(data.settings);
+        $('nav-leads-badge').textContent = Number(data.totalLeads || 0).toLocaleString('pt-BR');
       } catch (err) {
-        if (typeof showToast === 'function') showToast(err.message, 'error');
+        showToast(err.message, 'error');
       }
     }
 
-    // 2. Salvar dados de Perfil e Senha
+    // ---------- Salvar ----------
     async function saveProfile() {
-      const nome_gestor = document.getElementById('profile-name').value;
-      const email = document.getElementById('profile-email').value;
-      const current_password = document.getElementById('current-password').value;
-      const new_password = document.getElementById('new-password').value;
-      const confirm_password = document.getElementById('confirm-password').value;
+      const btn = $('btn-save-profile');
+      const email = $('profile-email').value.trim();
+      const current_password = $('current-password').value;
+      const new_password = $('new-password').value;
 
-      if (new_password && new_password !== confirm_password) {
+      if (new_password && new_password !== $('confirm-password').value) {
         showToast('A nova senha e a confirmação não coincidem.', 'error');
         return;
       }
+      if (new_password && new_password.length < 8) {
+        showToast('A nova senha precisa ter pelo menos 8 caracteres.', 'error');
+        return;
+      }
+      if ((new_password || email.toLowerCase() !== originalEmail) && !current_password) {
+        showToast('Informe a senha atual para alterar e-mail ou senha.', 'error');
+        return;
+      }
 
+      btn.disabled = true;
       try {
-        const response = await fetch('https://zyone-backend.vercel.app/api/configuracoes', {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            nome_gestor,
-            email,
-            current_password,
-            new_password
-          })
+        const { settings } = await patchSettings({
+          nome_gestor: $('profile-name').value,
+          email,
+          current_password,
+          new_password,
         });
+        applySettings(settings);
+        ['current-password', 'new-password', 'confirm-password'].forEach(id => { $(id).value = ''; });
 
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Erro ao atualizar perfil');
-
-        showToast('Perfil atualizado com sucesso!', 'check_circle');
-
-        // Limpar campos de senha após alteração
-        document.getElementById('current-password').value = '';
-        document.getElementById('new-password').value = '';
-        document.getElementById('confirm-password').value = '';
-
+        if (new_password) {
+          showToast('Senha alterada. Entre novamente.', 'lock');
+          setTimeout(() => { logout(); window.location.href = 'login.html'; }, 1500);
+        } else {
+          showToast('Perfil atualizado com sucesso!');
+        }
       } catch (err) {
         showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
       }
     }
 
-    // 3. Salvar Template de Mensagem do WhatsApp
     async function saveWhatsAppMessage() {
-      const whatsapp_template = document.getElementById('whatsapp-template').value;
-
+      const btn = $('btn-save-whatsapp');
+      btn.disabled = true;
       try {
-        const response = await fetch('https://zyone-backend.vercel.app/api/configuracoes', {
-          method: 'PATCH',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ whatsapp_template })
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Erro ao guardar template');
-
-        showToast('Mensagem do WhatsApp atualizada!', 'check_circle');
-
+        await patchSettings({ whatsapp_template: $('whatsapp-template').value });
+        showToast('Mensagem do WhatsApp atualizada!', 'chat');
       } catch (err) {
         showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    async function runSystemDiagnostics() {
+      const btn = $('btn-diagnostics');
+      btn.disabled = true;
+      try {
+        const { ms } = await fetchSettings();
+        showToast(`API e banco respondendo (${ms} ms).`);
+      } catch (err) {
+        showToast(err.message, 'error');
+      } finally {
+        btn.disabled = false;
       }
     }
 
