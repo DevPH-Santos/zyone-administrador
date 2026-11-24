@@ -458,6 +458,8 @@
                 class="text-dark-on-surface font-medium"></span></p>
             <p><span class="text-dark-text-subtle">Bairro:</span> <span id="modal-lead-neighborhood"
                 class="text-dark-on-surface font-medium"></span></p>
+                <p><span class="text-dark-text-subtle">CEP:</span> <span id="modal-lead-cep"
+                class="text-dark-on-surface font-medium"></span></p>
             <p><span class="text-dark-text-subtle">Cidade:</span> <span id="modal-lead-city"
                 class="text-dark-on-surface font-medium"></span></p>
           </div>
@@ -631,6 +633,7 @@
 
       $('modal-lead-address').textContent = addressOf(l) || '-';
       $('modal-lead-neighborhood').textContent = l.bairro || '-';
+      $('modal-lead-cep').textContent = l.cep || '-';
       $('modal-lead-city').textContent = l.cidade || '-';
 
       if ($('modal-whatsapp-action')) {
@@ -787,9 +790,9 @@
           if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;
           return `"${s.replace(/"/g, '""')}"`;
         };
-        const header = ['Nome', 'Telefone', 'E-mail', 'Cidade', 'Bairro', 'Endereço', 'Interesse', 'Cadastrado em'];
+        const header = ['Nome', 'Telefone', 'E-mail', 'Cidade', 'Bairro', 'Endereço', 'CEP', 'Interesse', 'Cadastrado em'];
         const rows = data.leads.map(l =>
-          [l.nome_completo, l.telefone, l.email, l.cidade, l.bairro, addressOf(l), l.interesse, formatDate(l.created_at)]
+          [l.nome_completo, l.telefone, l.email, l.cidade, l.bairro, addressOf(l), l.cep, l.interesse, formatDate(l.created_at)]
             .map(cell).join(';'));
         const csv = '\uFEFF' + [header.map(cell).join(';'), ...rows].join('\r\n');
 
