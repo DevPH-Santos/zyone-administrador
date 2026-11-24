@@ -25,6 +25,7 @@ O sistema é composto por páginas HTML que se comunicam com uma API remota para
 
 ## Telas
 
+<<<<<<< HEAD
 ### Visão geral
 
 Indicadores e atividade comercial.
@@ -42,6 +43,25 @@ Pesquisa, consulta e contato com leads.
 Perfil, integrações e mensagem do WhatsApp.
 
 <img src="docs/screenshots/configuracoes.png" alt="Tela de configurações do painel Farujo Cosméticos" width="100%" />
+=======
+<details>
+  <summary><strong>Visão geral</strong> — indicadores e atividade comercial</summary>
+  <br />
+  <img src="docs/screenshots/dashboard.png" alt="Tela de visão geral do painel Farujo Cosméticos" width="100%" />
+</details>
+
+<details>
+  <summary><strong>Leads e clientes</strong> — pesquisa, consulta e contato</summary>
+  <br />
+  <img src="docs/screenshots/leads.png" alt="Tela de leads e clientes do painel Farujo Cosméticos" width="100%" />
+</details>
+
+<details>
+  <summary><strong>Configurações</strong> — perfil, integrações e mensagem do WhatsApp</summary>
+  <br />
+  <img src="docs/screenshots/configuracoes.png" alt="Tela de configurações do painel Farujo Cosméticos" width="100%" />
+</details>
+>>>>>>> 7acfe6b924f06bf9d7fb9567bfcdfe2b21b6bf43
 
 ## Estrutura do projeto
 
